@@ -2,7 +2,8 @@ import pickle
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
 # TODO: add necessary import
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -21,7 +22,7 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
     # train the model
-    model = LogisticRegression()
+    model = RandomForestClassifier()
     model.fit(X_train, y_train)
     return model
 
@@ -123,13 +124,11 @@ def performance_on_categorical_slice(
 
     """
      # Filter the data based on the slice value
-    sliced_data = data[data[column_name] == slice_value].copy()
+    sliced_data = data[data[column_name] == slice_value]
     
-    # Drop the column used for slicing
-    sliced_data.drop(column_name, axis=1, inplace=True)
     
     # Process the sliced data using the encoder and label binarizer
-    X_slice, y_slice = process_data(
+    X_slice, y_slice, _, _ = process_data(
         sliced_data,
         categorical_features=categorical_features,
         label=label,
